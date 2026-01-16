@@ -259,6 +259,9 @@ export async function syncProgress(userId: string): Promise<{ pushed: number; pu
       currentStreak: cloudProgress.current_streak,
       longestStreak: cloudProgress.longest_streak,
       lastStudyDate: cloudProgress.last_study_date ? new Date(cloudProgress.last_study_date) : undefined,
+      xp: 0,
+      level: 1,
+      nextLevelXp: 100,
       updatedAt: new Date(cloudProgress.updated_at),
     };
     saveProgress(progress);

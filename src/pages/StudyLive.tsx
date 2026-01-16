@@ -11,7 +11,8 @@ import {
     Maximize2,
     Minimize2,
     BookOpen,
-    X
+    X,
+    Filter
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { PomodoroTimer } from '@/components/PomodoroTimer';
@@ -55,11 +56,7 @@ const MOCK_STREAMS: Stream[] = [
     },
     {
         id: '3',
-        videoId: 'VfW8J4Q0eY4', // Fake ID or finding a real Gongbang one is tricky without search. Using a generic focus one.
-        // Changing to a known active study stream or video if possible. 
-        // Let's use 'Study With Me' popular video ID if live not available, but UI implies live.
-        // Using a placeholder heavy rain for "Ambient"
-        videoId: 'mPZkdNFkNps', // 4K Campfire
+        videoId: 'mPZkdNFkNps',
         title: 'Cozy Cabin Ambience with Heavy Rain',
         creator: 'Cozy Rain',
         platform: 'youtube',

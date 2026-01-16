@@ -6,7 +6,8 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { BrainCircuit, Loader2, Sparkles } from 'lucide-react';
 import { aiService } from '@/services/ai';
-import { Quiz } from '@/types/quiz';
+import { Quiz, Question } from '@/types/quiz';
+import { toast } from 'sonner';
 
 interface QuizGeneratorProps {
     onQuizGenerated: (quiz: Partial<Quiz>) => void;
@@ -27,18 +28,30 @@ export function QuizGenerator({ onQuizGenerated, onCancel }: QuizGeneratorProps)
             const prompt = `Topic: ${topic}\n\nContext:\n${sourceText}`;
             const generatedData = await aiService.generateQuiz(prompt);
 
-            // Transform to match Quiz type structure partially
+            // Transform generated questions to proper Question type
+            const questions: Question[] = generatedData.questions.map((q: any, index: number) => ({
+                id: q.id || `q-${Date.now()}-${index}`,
+                quizId: '',
+                type: q.type || 'multiple_choice',
+                text: q.text || '',
+                options: q.options || [],
+                correctAnswer: q.correctAnswer || '',
+                explanation: q.explanation,
+                points: q.points || 10
+            }));
+
             const quizData: Partial<Quiz> = {
                 title: generatedData.title || `Quiz: ${topic}`,
                 description: `AI-generated quiz about ${topic}`,
-                questions: generatedData.questions,
+                questions,
                 isAiGenerated: true
             };
 
             onQuizGenerated(quizData);
+            toast.success('Quiz generated successfully!');
         } catch (error) {
             console.error("Failed to generate quiz:", error);
-            // In a real app, show error toast here
+            toast.error('Failed to generate quiz. Please try again.');
         } finally {
             setIsLoading(false);
         }
